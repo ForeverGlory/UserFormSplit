@@ -1,0 +1,8 @@
+name = User form Split Mail
+description = User profile form split to mail form part
+package = User Split
+core = 7.x
+dependencies[] = user_form_split
+
+version = 7.x-1.x-dev
+project = user_form_split_mail

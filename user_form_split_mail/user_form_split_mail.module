@@ -1,0 +1,35 @@
+<?php
+
+function user_form_split_mail_user_categories() {
+  return array(
+    array(
+      'name' => 'mail',
+      'title' => t('user mail'),
+      'weight' => 1,
+    ),
+  );
+}
+
+function user_form_split_mail_form_user_profile_form_alter(&$form, &$form_state) {
+  global $user;
+  if ($form['#user_category'] != 'mail') {
+    return;
+  }
+  $account = $form['#user'];
+  $admin = user_access('administer users');
+  $form['account']['mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail address'),
+    '#maxlength' => EMAIL_MAX_LENGTH,
+    '#required' => TRUE,
+    '#default_value' => $account->mail,
+  );
+}
+
+function user_form_split_mail_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_profile_form') {
+    if ($form['#user_category'] == 'account') {
+      $form['account']['mail']['#access'] = FALSE;
+    }
+  }
+}
