@@ -1,0 +1,38 @@
+<?php
+
+function user_form_split_name_user_categories() {
+  return array(
+    array(
+      'name' => 'name',
+      'title' => t('user name'),
+      'weight' => 1,
+    ),
+  );
+}
+
+function user_form_split_name_form_user_profile_form_alter(&$form, &$form_state) {
+  global $user;
+  if ($form['#user_category'] != 'name') {
+    return;
+  }
+  $account = $form['#user'];
+  $admin = user_access('administer users');
+  $form['account']['name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Username'),
+    '#maxlength' => USERNAME_MAX_LENGTH,
+    '#required' => TRUE,
+    '#default_value' => $account->name,
+    //添加判断，是否允许更改用户名
+    '#access' => TRUE, //(($user->uid == $account->uid && user_access('change own username')) || $admin),
+    '#weight' => -10,
+  );
+}
+
+function user_form_split_name_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_profile_form') {
+    if ($form['#user_category'] == 'account') {
+      $form['account']['name']['#access'] = FALSE;
+    }
+  }
+}
