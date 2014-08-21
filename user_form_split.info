@@ -1,0 +1,8 @@
+name = User Form Split
+description = User profile form split to parts (include name,mail,password,pictures)
+package = User Split
+core = 7.x
+
+version = 7.x-1.x-dev
+core = 7.x
+project = user_form_split
