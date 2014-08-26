@@ -33,3 +33,34 @@ function user_form_split_mail_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 }
+
+function user_form_split_mail_ds_fields_info() {
+  $fields = array();
+  $fields['user']['mail'] = array(
+    'title' => t('User Mail'),
+    'field_type' => DS_FIELD_TYPE_FUNCTION,
+    'function' => 'user_form_split_mail_render_field',
+    'properties' => array(
+      'entity_render_key' => 'mail',
+      'settings' => array(
+        'change' => array('type' => 'select', 'options' => array('no', 'yes')),
+      ),
+      'default' => array('change' => 'yes'),
+    )
+  );
+  return $fields;
+}
+
+function user_form_split_mail_render_field($field) {
+  $output = '';
+  $settings = isset($field['formatter_settings']) ? $field['formatter_settings'] : array();
+  $settings += $field['properties']['default'];
+
+  if (isset($field['properties']['entity_render_key']) && isset($field['entity']->{$field['properties']['entity_render_key']})) {
+    $output = '<label class="mail">' . check_plain($field['entity']->{$field['properties']['entity_render_key']}) . '</label>';
+  }
+  if (!empty($settings['change'])) {
+    $output .= '<label class="change">' . l(t('change'), 'user/' . $field['entity']->uid . '/edit/mail') . '</label>';
+  }
+  return $output;
+}
