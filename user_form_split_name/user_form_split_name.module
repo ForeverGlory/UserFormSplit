@@ -23,8 +23,7 @@ function user_form_split_name_form_user_profile_form_alter(&$form, &$form_state)
     '#maxlength' => USERNAME_MAX_LENGTH,
     '#required' => TRUE,
     '#default_value' => $account->name,
-    //添加判断，是否允许更改用户名
-    '#access' => TRUE, //(($user->uid == $account->uid && user_access('change own username')) || $admin),
+    '#access' => (($user->uid == $account->uid && user_access('change own username')) || $admin),
     '#weight' => -10,
   );
 }
