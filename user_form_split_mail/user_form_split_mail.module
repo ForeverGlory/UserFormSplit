@@ -60,7 +60,7 @@ function user_form_split_mail_render_field($field) {
     $output = '<label class="mail">' . check_plain($field['entity']->{$field['properties']['entity_render_key']}) . '</label>';
   }
   if (!empty($settings['change'])) {
-    $output .= '<label class="change">' . l(t('change'), 'user/' . $field['entity']->uid . '/edit/mail') . '</label>';
+    $output .= '<label class="change">' . l(t('change mail'), 'user/' . $field['entity']->uid . '/edit/mail') . '</label>';
   }
   return $output;
 }
