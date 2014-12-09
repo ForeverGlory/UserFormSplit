@@ -1,0 +1,7 @@
+name = User form Split Picture
+description = User profile form split to picture form part
+package = User Split
+core = 7.x
+dependencies[] = user_form_split
+
+version = 7.x-1.0

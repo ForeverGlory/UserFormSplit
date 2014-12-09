@@ -1,0 +1,33 @@
+<?php
+
+function user_form_split_picture_user_categories() {
+  return array(
+    array(
+      'name' => 'picture',
+      'title' => t('User picture'),
+      'weight' => 1,
+    ),
+  );
+}
+
+function user_form_split_picture_form_user_profile_form_alter(&$form, &$form_state) {
+  if ($form['#user_category'] == 'account') {
+    if (empty($form_state['user']->user_form_split_picture)) {
+      $form['picture']['#access'] = FALSE;
+      unset($form['#validate'][array_search('user_validate_picture', $form['#validate'])]);
+    }
+  } elseif ($form['#user_category'] == 'picture') {
+    if (variable_get('user_pictures', 0)) {
+      $account = $form_state['user'];
+      $account->user_form_split_picture = TRUE;
+      $form = drupal_get_form('user_profile_form', $account);
+      foreach ($form as $name => $field) {
+        if ($name == 'picture') {
+          $form[$name]['#access'] = TRUE;
+        } elseif (!in_array($name, array('actions', 'form_id', 'form_token', 'form_build_id')) && $name[0] != '#') {
+          $form[$name]['#access'] = FALSE;
+        }
+      }
+    }
+  }
+}
